@@ -1,0 +1,54 @@
+Overview: Take user input in any language, translate it to Engligh, and generate an image based on the description using a text-to-image model.
+
+Phase 1: Setup and Planning
+
+	Scope:
+		Input: The input could be in Hindi, English, Punjabi. (This is just for start, later we can improvise it to take input in other languages as well.)
+		Output: Generate image.
+		Deployment: Explore and decide among Hugging Face Spaces, Streamlit cloud, AWS etc.
+
+	Project Structure:
+		multi-language-image-generator/
+		|
+		|-- app.py			# Main app code (Gradio or Streamlit). Basically used to generate the frontend/UI for the model where user can interact with the model.
+		|-- translation.py	# Language detection + translation.
+		|-- generator.py  	# Image generation code. 
+		|-- requirement.txt # Mention python dependencies.
+		|-- README.md    	# Project overview and usage.
+		|-- assets       	# Static images, icons. etc.
+
+
+Phase 2: Multilingual Input Handling
+
+	Detect Input Language
+		Use langdetect or fasttext
+	
+	Translate to English
+		Use Hugging Face transformers
+
+Phase 3: Image Generation
+	
+	Choose Text-To-Image Model
+		Use Hugging Face's diffusers or Replicate API
+	
+Phase 4: Build the App UI
+	Use Gradio or Streamlit
+	
+Phase 5: Deployment
+	Use Hugging Face Spaces
+	OR Streamlit Cloud
+	OR AWS
+
+Phase 6: Test and Polish
+
+Upcoming Ideas to implement:
+1. Learn how to deploy it ?
+2. Use another approach of image generation.
+3. Explore how can I make accessible to other users ?
+4. Add exception handling for cases like:
+	-- When the user doesnot enter any prompt and hit generate image button.
+	-- When the user enters prompt in any unsupported language.
+5. Right now in the GenerateImage class constructor, we have initialized device="cpu". Explore is there a way to know, if the user is running the web app on a cpu or 
+   gpu, and then initialize the value of device parameter accordingly.
+6. Explore how can I run it on web server, rather than locally on my system?
+7. Think about how can I scale it to make it more interesting ?
