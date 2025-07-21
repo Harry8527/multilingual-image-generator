@@ -1,154 +1,25 @@
 import gradio as gr
-import numpy as np
-import random
+from translation import TranslateUserPrompt
+from generate_image import GenerateImage
 
-# import spaces #[uncomment to use ZeroGPU]
-from diffusers import DiffusionPipeline
-import torch
-
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model_repo_id = "stabilityai/sdxl-turbo"  # Replace to the model you would like to use
-
-if torch.cuda.is_available():
-    torch_dtype = torch.float16
-else:
-    torch_dtype = torch.float32
-
-pipe = DiffusionPipeline.from_pretrained(model_repo_id, torch_dtype=torch_dtype)
-pipe = pipe.to(device)
-
-MAX_SEED = np.iinfo(np.int32).max
-MAX_IMAGE_SIZE = 1024
+def process(input_prompt):
+    translation_obj = TranslateUserPrompt()
+    img_obj = GenerateImage()
+    eng_prompt = translation_obj.translate(text=input_prompt)
+    image = img_obj.generate_image(prompt=eng_prompt)
+    return eng_prompt, image
 
 
-# @spaces.GPU #[uncomment to use ZeroGPU]
-def infer(
-    prompt,
-    negative_prompt,
-    seed,
-    randomize_seed,
-    width,
-    height,
-    guidance_scale,
-    num_inference_steps,
-    progress=gr.Progress(track_tqdm=True),
-):
-    if randomize_seed:
-        seed = random.randint(0, MAX_SEED)
+# iface = gr.Interface(fn = process,inputs=gr.Textbox(label="Enter your prompt<br>The prompt can be in Hindi, English, Spanish, or Punjabi."), outputs=[gr.Textbox("Output Image"), gr.Image()], title="Multilingual Text-to-Image Generator")
 
-    generator = torch.Generator().manual_seed(seed)
+with gr.Blocks() as demo:
+    gr.Markdown("# Multi-lingual Text-to-Image generator.\nSupports Hindi, English, Spanish, or Punjabi.")
+    with gr.Row():
+        input_prompt = gr.Textbox(label="Enter your prompt")
+    with gr.Row():
+        translated_prompt = gr.Textbox(label="Translated prompt")
+        output_image = gr.Image(label="Output Image")
+    submit_btn = gr.Button("Generate Image")
+    submit_btn.click(fn=process, inputs=input_prompt, outputs=[translated_prompt, output_image])
 
-    image = pipe(
-        prompt=prompt,
-        negative_prompt=negative_prompt,
-        guidance_scale=guidance_scale,
-        num_inference_steps=num_inference_steps,
-        width=width,
-        height=height,
-        generator=generator,
-    ).images[0]
-
-    return image, seed
-
-
-examples = [
-    "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k",
-    "An astronaut riding a green horse",
-    "A delicious ceviche cheesecake slice",
-]
-
-css = """
-#col-container {
-    margin: 0 auto;
-    max-width: 640px;
-}
-"""
-
-with gr.Blocks(css=css) as demo:
-    with gr.Column(elem_id="col-container"):
-        gr.Markdown(" # Text-to-Image Gradio Template")
-
-        with gr.Row():
-            prompt = gr.Text(
-                label="Prompt",
-                show_label=False,
-                max_lines=1,
-                placeholder="Enter your prompt",
-                container=False,
-            )
-
-            run_button = gr.Button("Run", scale=0, variant="primary")
-
-        result = gr.Image(label="Result", show_label=False)
-
-        with gr.Accordion("Advanced Settings", open=False):
-            negative_prompt = gr.Text(
-                label="Negative prompt",
-                max_lines=1,
-                placeholder="Enter a negative prompt",
-                visible=False,
-            )
-
-            seed = gr.Slider(
-                label="Seed",
-                minimum=0,
-                maximum=MAX_SEED,
-                step=1,
-                value=0,
-            )
-
-            randomize_seed = gr.Checkbox(label="Randomize seed", value=True)
-
-            with gr.Row():
-                width = gr.Slider(
-                    label="Width",
-                    minimum=256,
-                    maximum=MAX_IMAGE_SIZE,
-                    step=32,
-                    value=1024,  # Replace with defaults that work for your model
-                )
-
-                height = gr.Slider(
-                    label="Height",
-                    minimum=256,
-                    maximum=MAX_IMAGE_SIZE,
-                    step=32,
-                    value=1024,  # Replace with defaults that work for your model
-                )
-
-            with gr.Row():
-                guidance_scale = gr.Slider(
-                    label="Guidance scale",
-                    minimum=0.0,
-                    maximum=10.0,
-                    step=0.1,
-                    value=0.0,  # Replace with defaults that work for your model
-                )
-
-                num_inference_steps = gr.Slider(
-                    label="Number of inference steps",
-                    minimum=1,
-                    maximum=50,
-                    step=1,
-                    value=2,  # Replace with defaults that work for your model
-                )
-
-        gr.Examples(examples=examples, inputs=[prompt])
-    gr.on(
-        triggers=[run_button.click, prompt.submit],
-        fn=infer,
-        inputs=[
-            prompt,
-            negative_prompt,
-            seed,
-            randomize_seed,
-            width,
-            height,
-            guidance_scale,
-            num_inference_steps,
-        ],
-        outputs=[result, seed],
-    )
-
-if __name__ == "__main__":
-    demo.launch()
+demo.launch(inbrowser=True)
