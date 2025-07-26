@@ -1,5 +1,6 @@
-torch
-gradio
-langdetect
-transformers
+accelerate
 diffusers
+invisible_watermark
+torch
+transformers
+xformers
