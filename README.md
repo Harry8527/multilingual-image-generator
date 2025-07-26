@@ -1,3 +1,16 @@
+---
+title: Multilingual Image Generator
+emoji: 🖼
+colorFrom: purple
+colorTo: red
+sdk: gradio
+sdk_version: 5.25.2
+app_file: app.py
+pinned: false
+license: mit
+short_description: Prompt in Hindi, English, Punjabi or Spanish → Get an image.
+---
+
 ## Overview: 
 This project is a multi lingual image generation tool that lets users describe any object or scene in Hindi, English, Punjabi, or Spanish. The system automatically detects
 the input language, translates the prompt to English, and then generates an image based on the translated prompt using Stable Diffusion.
@@ -43,3 +56,6 @@ the input language, translates the prompt to English, and then generates an imag
 ## Some snapshots of UI:
 Default UI - ![Default UI](DefaultUI.png)
 Generated image of a house when the user prompt was in punjabi - ![Punjabi Prompt Image](PunjabiPrompt.png)
+
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+
