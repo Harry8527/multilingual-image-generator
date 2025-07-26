@@ -13,7 +13,7 @@ def process(input_prompt):
 # iface = gr.Interface(fn = process,inputs=gr.Textbox(label="Enter your prompt<br>The prompt can be in Hindi, English, Spanish, or Punjabi."), outputs=[gr.Textbox("Output Image"), gr.Image()], title="Multilingual Text-to-Image Generator")
 
 with gr.Blocks() as demo:
-    gr.Markdown("# Multi-lingual Text-to-Image generator.\nSupports prompts in the Hindi, English, Spanish, or Punjabi.")
+    gr.Markdown("# Multi-lingual Text-to-Image generator.\nSupports Hindi, English, Spanish, or Punjabi.")
     with gr.Row():
         input_prompt = gr.Textbox(label="Enter your prompt")
     with gr.Row():
