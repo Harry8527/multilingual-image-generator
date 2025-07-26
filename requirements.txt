@@ -1,6 +1,5 @@
-accelerate
-diffusers
-invisible_watermark
 torch
+gradio
+langdetect
 transformers
-xformers
+diffusers
