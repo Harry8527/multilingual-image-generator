@@ -18,7 +18,8 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           HF_EMAIL: ${{ secrets.HF_EMAIL }}
           HF_NAME: ${{ secrets.HF_NAME }}
+          HF_UNAME: ${{ secrets.HF_UNAME}}
         run: | 
           git config --global user.email "$HF_EMAIL"
           git config --global user.name "$HF_NAME"
-          git push https://hugging3harry:$HF_TOKEN@huggingface.co/spaces/hugging3harry/multilingual-image-generator main
+          git push https://$HF_UNAME:$HF_TOKEN@huggingface.co/spaces/$HF_UNAME/multilingual-image-generator main
