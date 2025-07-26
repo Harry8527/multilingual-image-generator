@@ -1,0 +1,24 @@
+name: Sync hugging face space with github
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+      - name: Push to hub
+        env: 
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_EMAIL: ${{ secrets.HF_EMAIL }}
+          HF_NAME: ${{ secrets.HF_NAME }}
+        run: | 
+          git config --global user.email "$HF_EMAIL"
+          git config --global user.name "$HF_NAME"
+          git push https://hugging3harry:$HF_TOKEN@huggingface.co/spaces/hugging3harry/multilingual-image-generator main
