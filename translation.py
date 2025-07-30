@@ -13,14 +13,15 @@ class TranslateUserPrompt():
         }
 
     def find_language(self,user_prompt):
+        if len(user_prompt.strip().split()) < 4:
+            return None
         self.lang = detect(user_prompt)
         if self.lang in self.supported_languages:
             print(f"The input is in: {self.supported_languages[self.lang]}")
         else:
             print(f"Prompt is provided in unsupported language by the user.")
         return self.lang
-
-
+        
     def initialize_model_name(self, input_lang):
         if input_lang == "en":
             return None
@@ -35,11 +36,20 @@ class TranslateUserPrompt():
 
     def translate(self, text):
         lang = self.find_language(user_prompt=text)
-        model_name = self.initialize_model_name(input_lang = lang)
+        if not lang:
+            return "Please enter a prompt which has atleast 4 words."
+        
+        model_name = self.initialize_model_name(input_lang = lang)        
+        # if lang is en, that means the prompt is already in English, in that case we will return the prompt received in text arguement as it is.
+        if lang == "en":
+            return text
         tokenizer, model = self.get_tokenizer_and_model_obj(model_name=model_name)
         inputs = tokenizer(text, return_tensors="pt", padding=True)
         translated = model.generate(**inputs)
         return tokenizer.decode(translated[0], skip_special_tokens=True)
+
+# translate_obj = TranslateUserPrompt()
+# translate_obj.find_language("Generate an image of a cat.")
 
 # def main(input_text):
 #     translated_eng_prompt=""
