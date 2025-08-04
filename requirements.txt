@@ -3,3 +3,4 @@ gradio
 langdetect
 transformers
 diffusers
+sentencepiece

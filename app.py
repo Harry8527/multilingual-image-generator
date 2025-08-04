@@ -6,8 +6,6 @@ def process(input_prompt):
     translation_obj = TranslateUserPrompt()
     img_obj = GenerateImage()
     eng_prompt = translation_obj.translate(text=input_prompt)
-    if eng_prompt.startswith("Please enter"):
-        return eng_prompt, None 
     image = img_obj.generate_image(prompt=eng_prompt)
     return eng_prompt, image
 
@@ -17,7 +15,7 @@ def process(input_prompt):
 with gr.Blocks() as demo:
     gr.Markdown("# Multi-lingual Text-to-Image generator.\nSupports Hindi, English, Spanish, or Punjabi.")
     with gr.Row():
-        input_prompt = gr.Textbox(label="Enter your prompt here")
+        input_prompt = gr.Textbox(label="Enter your prompt")
     with gr.Row():
         translated_prompt = gr.Textbox(label="Translated prompt")
         output_image = gr.Image(label="Output Image")
