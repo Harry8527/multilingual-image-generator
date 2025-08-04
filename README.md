@@ -1,6 +1,6 @@
 ---
 title: Multilingual Image Generator
-emoji: 🖼
+emoji: 🚀
 colorFrom: purple
 colorTo: red
 sdk: gradio
@@ -58,4 +58,3 @@ Default UI - ![Default UI](DefaultUI.png)
 Generated image of a house when the user prompt was in punjabi - ![Punjabi Prompt Image](PunjabiPrompt.png)
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
-
