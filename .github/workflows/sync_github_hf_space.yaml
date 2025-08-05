@@ -27,4 +27,4 @@ jobs:
           cd hf-space
           git add .
           git commit -m "Sync from GitHub commit"
-          git push https://huggingface.co/spaces/$HF_UNAME/multilingual-image-generator HEAD:main
+          git push https://$HF_UNAME:$HF_TOKEN@huggingface.co/spaces/$HF_UNAME/multilingual-image-generator HEAD:main
