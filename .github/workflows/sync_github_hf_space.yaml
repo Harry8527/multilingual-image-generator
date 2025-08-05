@@ -23,10 +23,9 @@ jobs:
           git config --global user.email "$HF_EMAIL"
           git config --global user.name "$HF_NAME"
           git clone https://huggingface.co/spaces/$HF_UNAME/multilingual-image-generator hf-space
-          rsync -av --exclude='.git' ./ hf-space/
+          rsync -av --exclude='.git' --exclude='.gitignore' ./ hf-space/
           cd hf-space
           git status
           git add .
-          git reset .gitignore
           git commit -m "Sync from GitHub commit"
           git push https://$HF_UNAME:$HF_TOKEN@huggingface.co/spaces/$HF_UNAME/multilingual-image-generator HEAD:main
