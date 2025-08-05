@@ -15,7 +15,7 @@ def process(input_prompt):
 with gr.Blocks() as demo:
     gr.Markdown("# Multi-lingual Text-to-Image generator.\nSupports Hindi, English, Spanish, or Punjabi.")
     with gr.Row():
-        input_prompt = gr.Textbox(label="Enter your prompt here.")
+        input_prompt = gr.Textbox(label="Enter your prompt.")
     with gr.Row():
         translated_prompt = gr.Textbox(label="Translated prompt")
         output_image = gr.Image(label="Output Image")
