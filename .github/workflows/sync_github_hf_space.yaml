@@ -22,5 +22,9 @@ jobs:
         run: | 
           git config --global user.email "$HF_EMAIL"
           git config --global user.name "$HF_NAME"
-          git pull 
-          git push https://$HF_UNAME:$HF_TOKEN@huggingface.co/spaces/$HF_UNAME/multilingual-image-generator main
+          git clone https://huggingface.co/spaces/$HF_UNAME/multilingual-image-generator hf-space
+          rsync -av --exclude='.git' ./ hf-space/
+          cd hf-space
+          git add .
+          git commit -m "Sync from GitHub commit"
+          git push https://huggingface.co/spaces/$HF_UNAME/multilingual-image-generator HEAD:main
