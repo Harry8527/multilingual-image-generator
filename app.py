@@ -6,6 +6,8 @@ def process(input_prompt):
     translation_obj = TranslateUserPrompt()
     img_obj = GenerateImage()
     eng_prompt = translation_obj.translate(text=input_prompt)
+    if eng_prompt.startswith("Please enter a prompt which"):
+        return eng_prompt, None
     image = img_obj.generate_image(prompt=eng_prompt)
     return eng_prompt, image
 
