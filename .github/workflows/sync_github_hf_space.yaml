@@ -23,7 +23,7 @@ jobs:
           git config --global user.email "$HF_EMAIL"
           git config --global user.name "$HF_NAME"
           git clone https://huggingface.co/spaces/$HF_UNAME/multilingual-image-generator hf-space
-          commit_id = git rev-parse HEAD
+          commit_id = $(git rev-parse HEAD)
           rsync -av --exclude='.git' --exclude='.gitignore' ./ hf-space/
           cd hf-space
           git status
