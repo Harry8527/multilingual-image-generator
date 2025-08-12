@@ -18,7 +18,7 @@ with gr.Blocks() as demo:
     with gr.Row():
         input_prompt = gr.Textbox(label="Enter your prompt.")
     with gr.Row():
-        translated_prompt = gr.Textbox(label="Translated prompt")
+        translated_prompt = gr.HTML(label="Translated prompt")
         output_image = gr.Image(label="Output Image")
     submit_btn = gr.Button("Generate Image")
     submit_btn.click(
