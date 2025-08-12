@@ -5,7 +5,7 @@ from generate_image import GenerateImage
 def process(input_prompt):
     translation_obj = TranslateUserPrompt()
     img_obj = GenerateImage()
-    if len(input_prompt) < 4:
+    if len(input_prompt.split()) < 4:
         return "Please enter a prompt which has atleast 4 words.", None
     eng_prompt = translation_obj.translate(text=input_prompt)    
     image = img_obj.generate_image(prompt=eng_prompt)
