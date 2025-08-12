@@ -5,9 +5,9 @@ from generate_image import GenerateImage
 def process(input_prompt):
     translation_obj = TranslateUserPrompt()
     img_obj = GenerateImage()
-    eng_prompt = translation_obj.translate(text=input_prompt)
-    if eng_prompt.startswith("Please enter a prompt which"):
-        return eng_prompt, None
+    if len(input_prompt) < 4:
+        return "Please enter a prompt which has atleast 4 words.", None
+    eng_prompt = translation_obj.translate(text=input_prompt)    
     image = img_obj.generate_image(prompt=eng_prompt)
     return eng_prompt, image
 
@@ -23,17 +23,15 @@ with gr.Blocks() as demo:
         output_image = gr.Image(label="Output Image")
     submit_btn = gr.Button("Generate Image")
     submit_btn.click(fn=process, inputs=input_prompt, outputs=[translated_prompt, output_image])
-    # Logic to show pop-up when the input prompt length is less than 4.
-    submit_btn.click(
-        fn=None,
-        inputs=translated_prompt,
-        outputs=None,
-        js="""
-        (translated) => {
-        if(translated.startsWith("Please enter a prompt which"))
+    js="""
+    (translated, image) => {
+        if(translated.startsWith("Please enter a prompt which")){
             alert(translated);
+            return [];
         }
-        """
-    )
+        return [translated, image]
+    }
+    """
+    # Logic to show pop-up when the input prompt length is less than 4.
 
 demo.launch(inbrowser=True)
