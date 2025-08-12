@@ -23,5 +23,17 @@ with gr.Blocks() as demo:
         output_image = gr.Image(label="Output Image")
     submit_btn = gr.Button("Generate Image")
     submit_btn.click(fn=process, inputs=input_prompt, outputs=[translated_prompt, output_image])
+    # Logic to show pop-up when the input prompt length is less than 4.
+    submit_btn.click(
+        fn=None,
+        inputs=translated_prompt,
+        outputs=None,
+        js="""
+        (translated) => {
+        if(translated.startsWith("Please enter a prompt which"))
+            alert(translated);
+        }
+        """
+    )
 
 demo.launch(inbrowser=True)
